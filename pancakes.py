@@ -13,13 +13,15 @@ from selenium.webdriver.chrome.options import Options
 # Regex for stripping number out of temperature
 import re
 
+## YOUR DETAILS HERE
+
 # Pushnotifier for notifications
 from pushnotifier import PushNotifier as pn
-username = "tyranoc"
-password = "75ZHS7NMELV4wxG"
-api_key = "E5YR66C3VV75BBV46V75B575B63CVERKFBFFBBKFER"
-package_name = "com.pancakes.app"
-devices = ["86wL"] # my Pixel only, must be in array
+username = ""
+password = ""
+api_key = ""
+package_name = ""
+devices = [""] # my Pixel only, must be in array
 
 url_pancakes = "https://www.winterparlour.com.au/live-temp-update/"
 

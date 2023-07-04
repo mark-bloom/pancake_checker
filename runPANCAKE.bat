@@ -1,3 +1,3 @@
 @echo off
-py "C:\Users\Bloom Family\Documents\Mark\Code\pushnotifier\pancakes.py"
+py "PATH_TO_PYTHON_SCRIPT\pancakes.py"
 pause

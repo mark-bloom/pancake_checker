@@ -2,6 +2,7 @@
 from datetime import datetime
 from enum import Enum
 import time
+import traceback
 
 # Selenium for browser + login
 from selenium import webdriver
@@ -13,15 +14,13 @@ from selenium.webdriver.chrome.options import Options
 # Regex for stripping number out of temperature
 import re
 
-## YOUR DETAILS HERE
-
 # Pushnotifier for notifications
 from pushnotifier import PushNotifier as pn
-username = ""
-password = ""
-api_key = ""
-package_name = ""
-devices = [""] # my Pixel only, must be in array
+username = "tyranoc"
+password = "75ZHS7NMELV4wxG"
+api_key = "E5YR66C3VV75BBV46V75B575B63CVERKFBFFBBKFER"
+package_name = "com.pancakes.app"
+devices = ["86wL"] # my Pixel only, must be in array
 
 url_pancakes = "https://www.winterparlour.com.au/live-temp-update/"
 
@@ -37,6 +36,7 @@ current_temp = 0
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
 current_date = now.strftime("%A %d/%m/%Y")
+last_time_change = now
 
 def notifyPancakes():
     message = "It's " + str(current_temp) + " degrees at " + current_time + " " + current_date + ". Get some pancakes!"
@@ -106,13 +106,26 @@ while(True):
             break
         except WebDriverException:
             time.sleep(sleep_time)
-    temp_text = browser.find_element(By.ID, "temp").text
-    
-    current_temp = float(re.findall("^\d*\.*\d*",temp_text)[0])
 
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     current_date = now.strftime("%A %d/%m/%Y")
+    
+    try:
+        temp_text = browser.find_element(By.ID, "temp").text
+    except Exception as e:
+            print("Error in finding temperature at",current_time,"on",current_date)
+            traceback.print_exc()
+            time.sleep(sleep_time)
+            continue
+    
+    try:
+        current_temp = float(re.findall("^\d*\.*\d*",temp_text)[0])
+    except Exception as e:
+        print("Error converting temperature:",current_temp,"° at",current_time,"on",current_date)
+        traceback.print_exc()
+        time.sleep(sleep_time)
+        continue
 
     changed_temp = (previous_temp != current_temp)
 
